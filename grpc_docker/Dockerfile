@@ -5,3 +5,4 @@ RUN pip3 install -r /requirements.txt
 RUN mkdir /grpc-docker
 COPY . /grpc-docker
 WORKDIR /grpc-docker
+CMD
