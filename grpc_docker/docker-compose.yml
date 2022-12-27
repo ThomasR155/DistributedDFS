@@ -5,16 +5,12 @@ services:
     build: .
     ports:
       - "50051:50051"
+    command: tail -f /dev/null
     networks:
       frontend:
         ipv4_address: "172.20.0.10"
-    command: tail -F anything
-  node_1:
-    build: "redis:alpine"
-    networks:
-      frontend:
-        ipv4_address: "172.20.0.11"
-    command: tail -F anything
+
+
 
 networks:
   frontend:

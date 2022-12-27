@@ -1,0 +1,80 @@
+//protofile for Distributed DFS implementation
+// By Thomas Riedl and Raphael Duarte
+// 2022
+
+syntax = "proto3";
+
+package DFS;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  // Sends greeting to neighbors
+  rpc CallNeighbors (CallRequest) returns (CallReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The request for calling all neighbors
+message CallRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+// Reply from neighbors
+message CallReply {
+  string message = 1;
+}
+
+service DFS {
+    // Starts DFS in a certain node
+    rpc MakeRoot (RootRequest) returns (TreeMessage) {}
+    // Sends message to another node
+    rpc SendForward (ForwardMessage) returns (ForwardReply) {}
+    // Sends message upwards / backwards in the tree towards the root
+    rpc SendBackward (BackwardMessage) returns (BackwardReply) {}
+
+  }
+
+// Request from a client to start DFS
+message RootRequest {
+    int32 type = 1;
+  }
+
+// Standard Message for DFS
+message ForwardMessage {
+    int32 type = 1; // type 1 - M, type 2 ...
+    string origin = 2; // node name
+  }
+
+// Standard Message for DFS
+message ForwardReply {
+    int32 type = 1; // type 1 - confirm parent, type 2 - reject parent, type 3 - already parent
+    string origin = 2; //node of origin
+  }
+
+// Standard Message for DFS Backwards
+message BackwardMessage {
+    int32 type = 1; // type 1 - backward message
+    int32 child = 2; // child in the message
+    int32 parent = 3; // parent in the message
+  }
+
+// Standard Reply Message for DFS Backwards, just for confirmation
+message BackwardReply {
+    int32 type = 1; // type 1 - confirmation
+  }
+
+  message TreeMessage {
+    int32 type = 1; // type 1 - ok tree, type 2 - error
+    repeated int32 child = 2; // array of children
+    repeated int32 parent = 3; // array of parents
+  }
