@@ -21,20 +21,6 @@ def run():
         response = stub.SayHello(dfs_pb2.HelloRequest(name=nodename))
     print("Greeter client received: " + response.message)
 
-    #server 6
-    ip ='localhost:50056'
-    with grpc.insecure_channel(ip) as channel:
-        stub = dfs_pb2_grpc.GreeterStub(channel)
-        response = stub.SayHello(dfs_pb2.HelloRequest(name=nodename))
-    print("Greeter client received: " + response.message)
-
-    #server 7
-    ip ='localhost:50057'
-    with grpc.insecure_channel(ip) as channel:
-        stub = dfs_pb2_grpc.GreeterStub(channel)
-        response = stub.SayHello(dfs_pb2.HelloRequest(name=nodename))
-    print("Greeter client received: " + response.message)
-
     #call neighbors 
     ip ='localhost:50051'
     with grpc.insecure_channel(ip) as channel:
@@ -47,6 +33,8 @@ def run():
     with grpc.insecure_channel(ip) as channel:
         stub = dfs_pb2_grpc.DFSStub(channel)
         response = stub.MakeRoot(dfs_pb2.RootRequest(type=1))
+        print(response.child)
+        print(response.parent)
         for i in range(0, len(response.child)):
             print("Child: " + str(response.child[i]) + "Parent: " + str(response.parent[i]))
 
