@@ -52,13 +52,13 @@ message RootRequest {
 // Standard Message for DFS
 message ForwardMessage {
     int32 type = 1; // type 1 - M, type 2 ...
-    string origin = 2; // node name
+    int32 origin = 2; // node name
   }
 
 // Standard Message for DFS
 message ForwardReply {
     int32 type = 1; // type 1 - confirm parent, type 2 - reject parent, type 3 - already parent
-    string origin = 2; //node of origin
+    int32 origin = 2; //node of origin
   }
 
 // Standard Message for DFS Backwards
