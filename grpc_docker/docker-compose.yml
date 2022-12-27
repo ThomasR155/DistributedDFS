@@ -5,10 +5,11 @@ services:
     build: .
     ports:
       - "50051:50051"
-    command: tail -f /dev/null
     networks:
       frontend:
         ipv4_address: "172.20.0.10"
+    command: /bin/sh -c 'python3 test.py'
+    command: tail -f /dev/null
 
 
 
