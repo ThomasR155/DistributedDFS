@@ -4,8 +4,10 @@ import logging
 import grpc
 import dfs_pb2
 import dfs_pb2_grpc
+import yaml
 
 global_node_id = 1
+PORT = 50050
 
 class Greeter(dfs_pb2_grpc.GreeterServicer):
 
@@ -13,11 +15,14 @@ class Greeter(dfs_pb2_grpc.GreeterServicer):
         self.node = global_node_id
         self.neighbors = {} #dictionary with node name and IP
         #read initialization file
-        with open("Node"+str(self.node)+".txt", 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                self.neighbors[str(line.split()[0])] = str(line.split()[1])
-        
+        #read initialization file
+        with open("neighbours.yml", 'r') as f:
+            dict_nb = yaml.safe_load(f)
+        neighbours_node = dict_nb[global_node_id]
+        with open("ip_configuration.yml",'r') as file_ip:
+            dict_ip = yaml.safe_load(file_ip)
+        for nb in neighbours_node:
+            self.neighbors[str(nb)]=str(dict_ip.get(nb))
         print(self.neighbors)
 
     def SayHello(self, request, context):
@@ -25,7 +30,7 @@ class Greeter(dfs_pb2_grpc.GreeterServicer):
 
     def CallNeighbors(self, request, context):
         for n in self.neighbors:
-            ip = 'localhost:' + self.neighbors[n]
+            ip = self.neighbors[n]+':'+str(PORT+int(n))
             response = ""
             with grpc.insecure_channel(ip) as channel:
                 stub = dfs_pb2_grpc.GreeterStub(channel)
@@ -46,11 +51,14 @@ class DFS(dfs_pb2_grpc.DFSServicer):
         self.tree_parents = []
 
         #read initialization file
-        with open("Node"+str(self.node)+".txt", 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                self.neighbors[str(line.split()[0])] = str(line.split()[1])
-                self.unexplored.append(str(line.split()[0]))
+        with open("neighbours.yml", 'r') as f:
+            dict_nb = yaml.safe_load(f)
+        neighbours_node = dict_nb[global_node_id]
+        with open("ip_configuration.yml",'r') as file_ip:
+            dict_ip = yaml.safe_load(file_ip)
+        for nb in neighbours_node:
+            self.neighbors[str(nb)]=str(dict_ip.get(nb))
+            self.unexplored.append(str(nb))
         
         print(self.neighbors)
     
@@ -62,7 +70,8 @@ class DFS(dfs_pb2_grpc.DFSServicer):
             self.parent = self.node
             while self.unexplored: #while there are unexplored neighbors, message them
                 neighbor = self.unexplored.pop() #pops neighbor from the list
-                ip = 'localhost:' + self.neighbors[neighbor]
+                ip = self.neighbors[neighbor]+':'+str(PORT+int(neighbor))
+                print(ip)
                 with grpc.insecure_channel(ip) as channel:
                     stub = dfs_pb2_grpc.DFSStub(channel) 
                     #send message to neighbor
@@ -74,9 +83,9 @@ class DFS(dfs_pb2_grpc.DFSServicer):
                     else: #if refuses, nothing changes
                         print(str(neighbor), "refused parent\n")
                     #add roots children to tree
-        for i in range(0, len(self.children)):
-            self.tree_children.append(int(self.children[i]))
-            self.tree_parents.append(self.node)
+            for i in range(0, len(self.children)):
+                self.tree_children.append(int(self.children[i]))
+                self.tree_parents.append(self.node)
         return dfs_pb2.TreeMessage(type=1, child=self.tree_children, parent=self.tree_parents)
 
     #the function, actually means the server received a message from another node
@@ -87,7 +96,7 @@ class DFS(dfs_pb2_grpc.DFSServicer):
             self.unexplored.remove(str(self.parent)) #removes parent from unexplored
             while self.unexplored: #while there are unexplored neighbors, message them
                 neighbor = self.unexplored.pop() #pops neighbor from the list
-                ip = 'localhost:' + self.neighbors[neighbor]
+                ip = self.neighbors[neighbor]+':'+str(str(PORT+int(neighbor)))
                 print("Sending message to" + str(neighbor) + " \n") #for DEBUG / DELETE
                 with grpc.insecure_channel(ip) as channel:
                     stub = dfs_pb2_grpc.DFSStub(channel)
@@ -103,7 +112,7 @@ class DFS(dfs_pb2_grpc.DFSServicer):
                 self.tree_children.append(int(self.children[i]))
                 self.tree_parents.append(self.node)
             #after finishing exploring neighbors, send the children-parent back to the root
-            root_ip = 'localhost:' + self.neighbors[str(self.parent)]
+            root_ip = self.neighbors[str(self.parent)]+':'+str(PORT+int(self.parent))
             with grpc.insecure_channel(root_ip) as channel:
                     stub = dfs_pb2_grpc.DFSStub(channel)
                     for i in range(0, len(self.children)):
@@ -131,7 +140,7 @@ class DFS(dfs_pb2_grpc.DFSServicer):
            return dfs_pb2.BackwardReply(type=1)
         else:
             #if it is not the root, then send the message backwards
-            root_ip = 'localhost:' + self.neighbors[str(self.parent)]
+            root_ip = self.neighbors[str(self.parent)]+':'+str(PORT+int(self.parent))
             with grpc.insecure_channel(root_ip) as channel:
                     stub = dfs_pb2_grpc.DFSStub(channel)
                     print("Sending infomation upward to " + str(self.parent) + "\n")
@@ -141,7 +150,9 @@ class DFS(dfs_pb2_grpc.DFSServicer):
 
 
 def serve():
-    port = str(50050+global_node_id)
+    port = str(PORT+global_node_id)
+    with open("ip_configuration.yml",'r') as file_ip:
+        dict_ip = yaml.safe_load(file_ip)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     dfs_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
     dfs_pb2_grpc.add_DFSServicer_to_server(DFS(), server)

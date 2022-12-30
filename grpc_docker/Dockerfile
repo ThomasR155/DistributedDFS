@@ -1,8 +1,12 @@
 FROM ubuntu:latest
-RUN apt-get update && apt-get install python-is-python3 python3-pip -y
+RUN apt-get update && apt-get install -y python3 python3-pip cairo
 COPY ./requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 RUN mkdir /grpc-docker
 COPY . /grpc-docker
 WORKDIR /grpc-docker/ddfs
-#ENTRYPOINT ["python -m grpc_tools.protoc --proto_path=. --python_out=. --pyi_out=. --grpc_python_out=. dfs.proto"]
+ARG PORT 
+ENV PORT "${PORT}"
+ARG NODE_ID 
+ENV NODE_ID "${NODE_ID}"
+RUN ["python3", "-m",  "grpc_tools.protoc" ,"-I." ,"--python_out=.",  "--pyi_out=.", "--grpc_python_out=.", "dfs.proto"]

@@ -1,0 +1,31 @@
+? !!python/object/apply:numpy.core.multiarray.scalar
+- &id001 !!python/object/apply:numpy.dtype
+  args:
+  - i4
+  - false
+  - true
+  state: !!python/tuple
+  - 3
+  - <
+  - null
+  - null
+  - null
+  - -1
+  - -1
+  - 0
+- !!binary |
+  AQAAAA==
+: - 1
+  - 1
+? !!python/object/apply:numpy.core.multiarray.scalar
+- *id001
+- !!binary |
+  AgAAAA==
+: - 2
+  - 2
+? !!python/object/apply:numpy.core.multiarray.scalar
+- *id001
+- !!binary |
+  AwAAAA==
+: - 3
+  - 3
