@@ -1,50 +1,124 @@
-version: "3"
-
-services:
-  n1:
-    build:
-      context: .
-      args:
-        PORT: 50051
-        NODE_ID: 1
-    volumes:
-      - ./output:/grpc-docker/ddfs/output
-    networks:
-      frontend:
-        ipv4_address: "172.20.0.11"
-    command: /bin/sh -c 'python3 dfs_server1.py'
-    container_name: node1
-
-  n2:
-    build:
-      context: .
-      args:
-        PORT: 50051
-        NODE_ID: 2
-    networks:
-      frontend:
-        ipv4_address: "172.20.0.12"
-    command: /bin/sh -c 'python3 dfs_server1.py'
-    container_name: node2
-
-
-  n3:
-    build:
-      context: .
-      args:
-        PORT: 50051
-        NODE_ID: 3
-    networks:
-      frontend:
-        ipv4_address: "172.20.0.13"
-    command: /bin/sh -c 'python3 dfs_server1.py'
-    container_name: node3
-
-  
-  
 networks:
   frontend:
     ipam:
       config:
-        - subnet: "172.20.0.0/24"
- 
+      - subnet: 172.20.0.0/24
+services:
+  n1:
+    build:
+      args:
+        NODE_ID: 1
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node1
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.11
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n10:
+    build:
+      args:
+        NODE_ID: 10
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node10
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.20
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n2:
+    build:
+      args:
+        NODE_ID: 2
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node2
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.12
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n3:
+    build:
+      args:
+        NODE_ID: 3
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node3
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.13
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n4:
+    build:
+      args:
+        NODE_ID: 4
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node4
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.14
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n5:
+    build:
+      args:
+        NODE_ID: 5
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node5
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.15
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n6:
+    build:
+      args:
+        NODE_ID: 6
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node6
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.16
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n7:
+    build:
+      args:
+        NODE_ID: 7
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node7
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.17
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+  n8:
+    build:
+      args:
+        NODE_ID: 8
+        PORT: 50051
+      context: .
+    command: /bin/sh -c 'python3 dfs_server1.py'
+    container_name: node8
+    networks:
+      frontend:
+        ipv4_address: 172.20.0.18
+    volumes:
+    - ./output:/grpc-docker/ddfs/output
+version: '3'
