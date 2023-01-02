@@ -10,7 +10,7 @@ The resulting spanning tree shows which connections inside of the network are ne
 #### Windows
 For the execution of our algorithm on windows there is a .ipynb-notebook provided.
 To run the execution notebook an anaconda and docker installation are required.
-If these prerequisites are met the code can be executed by following commands inside the grpc_docker directory:
+If these prerequisites are met the code can be executed by following commands inside the main directory:
 
     conda create --name ddfs
     conda activate ddfs
