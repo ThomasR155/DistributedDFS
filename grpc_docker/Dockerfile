@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 RUN apt-get update && apt-get install -y python3 python3-pip
-COPY ./requirements.txt /requirements.txt
-RUN pip3 install -r /requirements.txt
+COPY ./requirements_docker.txt /requirements_docker.txt
+RUN pip3 install -r /requirements_docker.txt
 RUN mkdir /grpc-docker
 COPY . /grpc-docker
 WORKDIR /grpc-docker/ddfs

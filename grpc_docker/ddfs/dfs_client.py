@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 global_node_id  = int(os.getenv('NODE_ID'))
 PORT = int(os.getenv('PORT'))
-print(global_node_id)
+print("Root: ", global_node_id)
 
 
 def run():
@@ -30,13 +30,13 @@ def run():
     with grpc.insecure_channel(ip) as channel:
         stub = dfs_pb2_grpc.GreeterStub(channel)
         response = stub.SayHello(dfs_pb2.HelloRequest(name=str(global_node_id)))
-    print("Greeter client received: " + response.message)
+    print("Connected to server: " + response.message + " successfully.")
 
     #call neighbors 
     with grpc.insecure_channel(ip) as channel:
         stub = dfs_pb2_grpc.GreeterStub(channel)
         response = stub.CallNeighbors(dfs_pb2.CallRequest(name=str(global_node_id)))
-    print("Greeter client received: " + response.message)
+    print("Greeted Neighbour: " + response.message)
 
     #make root DFS procedure 
     edges = np.empty((0,2), int)
@@ -53,7 +53,7 @@ def run():
     pos = nx.spring_layout(G)
     color_map = ['red' if node == global_node_id else 'green' for node in G] 
     nx.draw(G, pos, node_size=1500, node_color=color_map, font_size=10, font_weight='bold',with_labels=True)
-    plt.savefig("output/mst.png")
+    plt.savefig("output/spanning_tree.png")
  
 
 if __name__ == '__main__':

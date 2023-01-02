@@ -146,13 +146,10 @@ class DFS(dfs_pb2_grpc.DFSServicer):
                     response = stub.SendBackward(dfs_pb2.BackwardMessage(type=1, child=request.child, parent=request.parent))
             return dfs_pb2.BackwardReply(type=1)
         return super().SendBack(request, context)
-
-
+    
 def serve():
-    print("test")
     port = str(PORT)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    print("test")
     dfs_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
     dfs_pb2_grpc.add_DFSServicer_to_server(DFS(), server)
     server.add_insecure_port('[::]:' + port)

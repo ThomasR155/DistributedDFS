@@ -10,7 +10,7 @@ services:
         NODE_ID: 1
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node1
     networks:
       frontend:
@@ -23,7 +23,7 @@ services:
         NODE_ID: 10
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node10
     networks:
       frontend:
@@ -36,7 +36,7 @@ services:
         NODE_ID: 2
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node2
     networks:
       frontend:
@@ -49,7 +49,7 @@ services:
         NODE_ID: 3
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node3
     networks:
       frontend:
@@ -62,7 +62,7 @@ services:
         NODE_ID: 4
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node4
     networks:
       frontend:
@@ -75,7 +75,7 @@ services:
         NODE_ID: 5
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node5
     networks:
       frontend:
@@ -88,7 +88,7 @@ services:
         NODE_ID: 6
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node6
     networks:
       frontend:
@@ -101,7 +101,7 @@ services:
         NODE_ID: 7
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node7
     networks:
       frontend:
@@ -114,7 +114,7 @@ services:
         NODE_ID: 8
         PORT: 50051
       context: .
-    command: /bin/sh -c 'python3 dfs_server1.py'
+    command: /bin/sh -c 'python3 dfs_server.py'
     container_name: node8
     networks:
       frontend:
