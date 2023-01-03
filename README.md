@@ -10,19 +10,31 @@ The resulting spanning tree shows which connections inside of the network are ne
 #### Windows
 For the execution of our algorithm on windows there is a .ipynb-notebook provided.
 To run the execution notebook an anaconda and docker installation are required.
-If these prerequisites are met the code can be executed by following commands inside the main directory:
+If these prerequisites are met the code can be executed by following commands (example was done on Windows 11):
 
+    git clone https://github.com/ThomasR155/DistributedDFS
+    cd DistributedDFS
     conda create --name ddfs
     conda activate ddfs
     conda install pip jupyter
-    pip install -r requirements_windows.txt
+    pip install -r requirements_host.txt
     cd ddfs
     jupyter notebook dfs_execution.ipynb
 
 #### Linux
-For the execution of our algorithm on linux there is a .py-script provided.
-To run the execution script a docker installation is required.
-If these prerequisites are met the code can be executed by following commands inside the main directory on any linux client or virtual machine:
+For the execution of our algorithm on linux there is a .ipynb-notebook provided.
+To run the execution notebook a docker installation is required.
+If these prerequisites are met the code can be executed by following commands (example was done on Ubuntu 22.04):
+
+    git clone https://github.com/ThomasR155/DistributedDFS
+    cd DistributedDFS
+    sudo apt-get install python3-pip jupyter-notebook docker-compose
+    sudo groupadd docker
+    sudo usermod -aG docker <username>
+    pip install -r requirements_host.txt
+    cd ddfs
+    jupyter notebook dfs_execution.ipynb
+
 
 
 ### Report
