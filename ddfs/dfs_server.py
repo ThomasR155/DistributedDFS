@@ -9,35 +9,6 @@ import os
 global_node_id  = int(os.getenv('NODE_ID'))
 PORT = int(os.getenv('PORT'))
 
-class Greeter(dfs_pb2_grpc.GreeterServicer):
-
-    def __init__(self):
-        self.node = global_node_id
-        self.neighbors = {} #dictionary with node name and IP
-        #read initialization file
-        with open("neighbours.yml", 'r') as f:
-            dict_nb = yaml.safe_load(f)
-            print(dict_nb)
-        neighbours_node = dict_nb[int(global_node_id)]
-        with open("ip_configuration.yml",'r') as file_ip:
-            dict_ip = yaml.safe_load(file_ip)
-        for nb in neighbours_node:
-            self.neighbors[str(nb)]=str(dict_ip.get(nb))
-        print(self.neighbors)
-
-    def SayHello(self, request, context):
-        return dfs_pb2.HelloReply(message=('Hello, %s! from ' % request.name) + str(self.node))
-
-    def CallNeighbors(self, request, context):
-        for n in self.neighbors:
-            ip = self.neighbors[n]+':'+str(PORT)
-            response = ""
-            with grpc.insecure_channel(ip) as channel:
-                stub = dfs_pb2_grpc.GreeterStub(channel)
-                response = stub.SayHello(dfs_pb2.HelloRequest(name=str(self.node)))
-                #response = "default"
-        return dfs_pb2.CallReply(message=response.message)
-
 class DFS(dfs_pb2_grpc.DFSServicer):
     
     #initialize node with information about neighbors
@@ -181,7 +152,6 @@ class DFS(dfs_pb2_grpc.DFSServicer):
 def serve():
     port = str(PORT)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    dfs_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)
     dfs_pb2_grpc.add_DFSServicer_to_server(DFS(), server)
     server.add_insecure_port('[::]:' + port)
     

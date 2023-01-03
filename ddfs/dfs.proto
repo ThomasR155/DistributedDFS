@@ -6,34 +6,6 @@ syntax = "proto3";
 
 package DFS;
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-  // Sends greeting to neighbors
-  rpc CallNeighbors (CallRequest) returns (CallReply) {}
-}
-
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
-
-// The request for calling all neighbors
-message CallRequest {
-  string name = 1;
-}
-
-// The response message containing the greetings
-message HelloReply {
-  string message = 1;
-}
-
-// Reply from neighbors
-message CallReply {
-  string message = 1;
-}
-
 service DFS {
     // Starts DFS in a certain node
     rpc MakeRoot (RootRequest) returns (TreeMessage) {}
