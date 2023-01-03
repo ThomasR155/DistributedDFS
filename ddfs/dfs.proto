@@ -41,6 +41,8 @@ service DFS {
     rpc SendForward (ForwardMessage) returns (ForwardReply) {}
     // Sends message upwards / backwards in the tree towards the root
     rpc SendBackward (BackwardMessage) returns (BackwardReply) {}
+    // Resets the network
+    rpc ResetNetworkSvc (ResetNetworkRequest) returns (ResetNetworkReply) {}
 
   }
 
@@ -73,8 +75,16 @@ message BackwardReply {
     int32 type = 1; // type 1 - confirmation
   }
 
-  message TreeMessage {
+message TreeMessage {
     int32 type = 1; // type 1 - ok tree, type 2 - error
     repeated int32 child = 2; // array of children
     repeated int32 parent = 3; // array of parents
   }
+
+message ResetNetworkRequest {
+  int32 type = 1; //just for information
+}
+
+message ResetNetworkReply {
+  int32 type = 1; //just for information
+}

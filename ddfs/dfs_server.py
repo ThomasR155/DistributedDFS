@@ -147,6 +147,37 @@ class DFS(dfs_pb2_grpc.DFSServicer):
             return dfs_pb2.BackwardReply(type=1)
         return super().SendBack(request, context)
     
+        
+    def ResetNetworkSvc(self, request, context):
+        #send reset message down the network (to the children only)
+        for child in self.children:
+            ip = self.neighbors[str(child)]+':'+str(PORT)
+            with grpc.insecure_channel(ip) as channel:
+                stub = dfs_pb2_grpc.DFSStub(channel)
+                response = stub.ResetNetworkSvc(dfs_pb2.ResetNetworkRequest(type=1))
+        
+        #reset the node state 
+        self.neighbors = {} #dictionary with node name and IP
+        self.parent = -1
+        self.children = []
+        self.unexplored = []
+        self.tree_children = []
+        self.tree_parents = []
+        
+        #read initialization file
+        with open("neighbours.yml", 'r') as f:
+            dict_nb = yaml.safe_load(f)
+        neighbours_node = dict_nb[int(global_node_id)]
+        with open("ip_configuration.yml",'r') as file_ip:
+            dict_ip = yaml.safe_load(file_ip)
+        for nb in neighbours_node:
+            self.neighbors[str(nb)]=str(dict_ip.get(nb))
+            self.unexplored.append(str(nb))
+        
+        return dfs_pb2.ResetNetworkReply(type=1)
+        
+
+    
 def serve():
     port = str(PORT)
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
