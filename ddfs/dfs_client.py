@@ -53,7 +53,13 @@ def run():
     pos = nx.spring_layout(G)
     color_map = ['red' if node == global_node_id else 'green' for node in G] 
     nx.draw(G, pos, node_size=1500, node_color=color_map, font_size=10, font_weight='bold',with_labels=True)
-    plt.savefig("output/spanning_tree.png")
+    plt.savefig("output/spanning_tree_root_{}.png".format(int(global_node_id)))
+
+    with grpc.insecure_channel(ip) as channel:
+        stub = dfs_pb2_grpc.DFSStub(channel)
+        response = stub.ResetNetworkSvc(dfs_pb2.ResetNetworkRequest(type=1))
+
+
  
 
 if __name__ == '__main__':
