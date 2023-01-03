@@ -61,3 +61,4 @@ def write_docker_compose_yml(edge_list,port):
         yaml.dump(compose_file, outfile, default_flow_style=False)
     print("Initialization of Node 1:")
     print(compose_file["services"]["n1"])
+    return vertices

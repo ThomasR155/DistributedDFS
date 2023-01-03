@@ -20,7 +20,10 @@ If these prerequisites are met the code can be executed by following commands in
     jupyter notebook dfs_execution.ipynb
 
 #### Linux
-...
+For the execution of our algorithm on linux there is a .py-script provided.
+To run the execution script a docker installation is required.
+If these prerequisites are met the code can be executed by following commands inside the main directory on any linux client or virtual machine:
+
 
 ### Report
 In addition to the implementation of the algorithm a short report is provided. In the report the algorithm and the deployment of the distributed system are explained in detail. There is also more information on how the work was split in between the team members and the algorithm is demonstrated based on some graph examples.
