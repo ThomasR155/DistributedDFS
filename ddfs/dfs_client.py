@@ -22,22 +22,6 @@ def run():
     #ip =str(dict_ip.get(str(global_node_id)))+':'+str(PORT)
     ip ='localhost:'+str(PORT)
 
-    # NOTE(gRPC Python Team): .close() is possible on a channel and should be
-    # used in circumstances in which the with statement does not fit the needs
-    # of the code.
-    print("Will try to greet world ...")
-    #server 1
-    with grpc.insecure_channel(ip) as channel:
-        stub = dfs_pb2_grpc.GreeterStub(channel)
-        response = stub.SayHello(dfs_pb2.HelloRequest(name=str(global_node_id)))
-    print("Connected to server: " + response.message + " successfully.")
-
-    #call neighbors 
-    with grpc.insecure_channel(ip) as channel:
-        stub = dfs_pb2_grpc.GreeterStub(channel)
-        response = stub.CallNeighbors(dfs_pb2.CallRequest(name=str(global_node_id)))
-    print("Greeted Neighbour: " + response.message)
-
     #make root DFS procedure 
     edges = np.empty((0,2), int)
     with grpc.insecure_channel(ip) as channel:
@@ -58,9 +42,6 @@ def run():
     with grpc.insecure_channel(ip) as channel:
         stub = dfs_pb2_grpc.DFSStub(channel)
         response = stub.ResetNetworkSvc(dfs_pb2.ResetNetworkRequest(type=1))
-
-
- 
 
 if __name__ == '__main__':
     logging.basicConfig()
