@@ -22,9 +22,6 @@ def run():
     #ip =str(dict_ip.get(str(global_node_id)))+':'+str(PORT)
     ip ='localhost:'+str(PORT)
 
-    # NOTE(gRPC Python Team): .close() is possible on a channel and should be
-    # used in circumstances in which the with statement does not fit the needs
-    # of the code.
     #make root DFS procedure 
     edges = np.empty((0,2), int)
     with grpc.insecure_channel(ip) as channel:
