@@ -38,9 +38,6 @@ def run():
         stub = dfs_pb2_grpc.DFSStub(channel)
         response = stub.ResetNetworkSvc(dfs_pb2.ResetNetworkRequest(type=1))
 
-
- 
-
 if __name__ == '__main__':
     logging.basicConfig()
     run()
